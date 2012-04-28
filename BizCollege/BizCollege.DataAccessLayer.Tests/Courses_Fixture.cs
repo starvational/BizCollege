@@ -19,7 +19,7 @@ namespace BizCollege.DataAccessLayer.Tests
         }
 
         [Test]
-        public void Can_add_new_course()
+        public void CanAddNewCourse()
         {
             var dummyCourse = CreateDummyCourse();
 
@@ -48,7 +48,7 @@ namespace BizCollege.DataAccessLayer.Tests
         }
 
         [Test]
-        public void Can_remove_existing_course()
+        public void CanRemoveExistingCourse()
         {
             var dummyCourse = CreateDummyCourse();
 
@@ -66,19 +66,24 @@ namespace BizCollege.DataAccessLayer.Tests
         }
 
         #region unimplemented tests
-        //[Test]
-        //public void Can_update_course()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [Test]
+        public void CanUpdateExistingCourse()
+        {
+            throw new NotImplementedException();
+        }
 
-        //[Test]
-        //public void Can_get_all_courses()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [Test]
+        public void CanGetAllCourses()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
+        /// <summary>
+        /// Helper method that generates a Course to used for running the various course
+        /// tests that use a Course container to add to the database
+        /// </summary>
+        /// <returns></returns>
         private Course CreateDummyCourse()
         {
             var dummyCourse = new Course();
