@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizCollege.DataAccessLayer", "BizCollege.DataAccessLayer\BizCollege.DataAccessLayer.csproj", "{11093683-B806-407B-982F-52C0E48E0EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizCollege.DataAccessLayer.Tests", "BizCollege.DataAccessLayer.Tests\BizCollege.DataAccessLayer.Tests.csproj", "{64F2D98C-3DED-4BAE-AA19-65D186E4927F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizCollege", "BizCollege\BizCollege.csproj", "{D5805840-D3AD-4A7F-9363-D81124FB02C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11093683-B806-407B-982F-52C0E48E0EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11093683-B806-407B-982F-52C0E48E0EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11093683-B806-407B-982F-52C0E48E0EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11093683-B806-407B-982F-52C0E48E0EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64F2D98C-3DED-4BAE-AA19-65D186E4927F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64F2D98C-3DED-4BAE-AA19-65D186E4927F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64F2D98C-3DED-4BAE-AA19-65D186E4927F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64F2D98C-3DED-4BAE-AA19-65D186E4927F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5805840-D3AD-4A7F-9363-D81124FB02C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5805840-D3AD-4A7F-9363-D81124FB02C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5805840-D3AD-4A7F-9363-D81124FB02C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5805840-D3AD-4A7F-9363-D81124FB02C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="BizCollege.DataAccessLayer"
+                   namespace="BizCollege.DataAccessLayer.Domain"
+                   default-lazy="false">
+  <class name="Course" lazy="false">
+    <id name="Id">
+      <generator class="uuid.hex"/>
+    </id>
+
+    <property name="Name"/>
+    <property name="Description"/>
+    <property name="CreatedByUsername"/>
+    <property name="LastUpdated"/>
+    <property name="LastUpdateByUsername"/>
+    <property name="State"/>
+    
+    <bag name="CourseSlides" cascade="all-delete-orphan">
+      <key column="Id"/>
+      <many-to-many column="fk_courseContentId" class="CourseContent"/>
+    </bag>
+
+    <property name="NumberOfCourseCompletions"/>
+
+  </class>
+</hibernate-mapping>

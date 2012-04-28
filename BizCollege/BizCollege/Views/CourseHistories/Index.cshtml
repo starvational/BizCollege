@@ -1,0 +1,53 @@
+@model IEnumerable<BizCollegeItr.Models.CourseHistory>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            CourseStatus
+        </th>
+        <th>
+            StartedOn
+        </th>
+        <th>
+            CompletedOn
+        </th>
+        <th>
+            Course
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+        <td>
+			@item.CourseStatus
+        </td>
+        <td>
+			@String.Format("{0:g}", item.StartedOn)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.CompletedOn)
+        </td>
+        <td>
+			@(item.Course == null ? "None" : item.Course.Title)
+        </td>
+    </tr>
+}
+
+</table>
+
+

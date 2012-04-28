@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="BizCollege.DataAccessLayer"
+                   namespace="BizCollege.DataAccessLayer.Domain"
+                   default-lazy="false">
+  <class name="CourseContent" lazy="false">
+    <id name="Id">
+      <generator class="uuid.hex"/>
+    </id>
+
+    <property name="Title"/>
+    <property name="Description"/>
+    <property name="CourseContentType"/>
+    <property name="ResourcePath"/>
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+@model BizCollegeItr.Models.CourseHistory
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>CourseHistory</legend>
+
+    <div class="display-label">CourseStatus</div>
+    <div class="display-field">@Model.CourseStatus</div>
+
+    <div class="display-label">StartedOn</div>
+    <div class="display-field">@String.Format("{0:g}", Model.StartedOn)</div>
+
+    <div class="display-label">CompletedOn</div>
+    <div class="display-field">@String.Format("{0:g}", Model.CompletedOn)</div>
+
+    <div class="display-label">Course</div>
+    <div class="display-field">@(Model.Course == null ? "None" : Model.Course.Title)</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

@@ -1,0 +1,47 @@
+@model IEnumerable<BizCollegeItr.Models.CourseHistory>
+@{
+    ViewBag.Title = "Index";
+}
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <h3>
+                    @Html.ActionLink(item.Course.Title, "Details", new { id = item.Id })
+                </h3>
+                @(item.Course == null ? "None" : item.Course.Description)
+            </td>
+            <td>
+                @{
+            var statusString = Html.GetCompetionStatus(item.CourseStatus); 
+                }
+                @if (item.CourseStatus == 1)
+                {
+                    // not started.  
+                    <div class="pending">
+                        @String.Format("{0} ", statusString)
+                    </div>            
+                }
+                else if (item.CourseStatus == 2)
+                {
+                    // started.  
+                    <div>
+                        @String.Format("{0} on {1} ", statusString, item.StartedOn.ToShortDateString())
+                    </div>   
+                }
+                else if (item.CourseStatus == 3)
+                {
+                    // started.  
+                    <div class="completed">
+                        @String.Format("{0} on {1} ", statusString, item.StartedOn.ToShortDateString())
+                    </div>   
+                }
+                else
+                {
+                    // do nothing  
+                }
+            </td>
+        </tr>
+    }
+</table>
