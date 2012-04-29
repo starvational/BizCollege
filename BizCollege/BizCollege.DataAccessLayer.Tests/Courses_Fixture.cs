@@ -91,7 +91,6 @@ namespace BizCollege.DataAccessLayer.Tests
             dummyCourse.Name = "Business 101";
             dummyCourse.Description = "Learn the basics about running a business";
             dummyCourse.State = CourseState.Inactive;
-            dummyCourse.LastUpdated = DateTime.Now;
             dummyCourse.LastUpdateByUsername = "miguel";
             dummyCourse.CourseSlides = new List<CourseContent>();
 

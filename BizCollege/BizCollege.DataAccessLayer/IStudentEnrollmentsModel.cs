@@ -11,7 +11,9 @@ namespace BizCollege.DataAccessLayer
     /// </summary>
     public interface IStudentEnrollmentsModel
     {
-        void EnrollStudentInCourse(string username, string courseId);
+        StudentRecord AddEnrollment(string username, string courseId);
+        void RemoveEnrollment(string username, string courseId);
+        StudentRecord GetStudentRecord(string username);
         void SetStudentCourseCompletion(string username, string courseId);
         StudentRecord GetStudentEnrollmentInfo(string username);
     }

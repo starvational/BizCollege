@@ -14,5 +14,23 @@ namespace BizCollege.DataAccessLayer.Domain
     {
         public string Username { get; set; }
         public HashSet<Enrollment> StudentCourseEnrollments { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            StudentRecord other = obj as StudentRecord;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.Username.Equals(other.Username);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Username.GetHashCode();
+        }
     }
 }

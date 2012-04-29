@@ -11,7 +11,7 @@ namespace BizCollege.DataAccessLayer
     /// </summary>
     public interface ICoursesModel
     {
-        Course AddOrUpdateCourse(Course newcourse);
+        Course AddOrUpdateCourse(Course courseToAddOrUpdate);
         void RemoveCourse(string courseId);
         Course GetCourse(string courseId);
         ICollection<Course> GetAllCourses();

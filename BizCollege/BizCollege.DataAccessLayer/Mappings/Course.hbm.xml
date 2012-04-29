@@ -21,6 +21,6 @@
     </bag>
 
     <property name="NumberOfCourseCompletions"/>
-
+    <property name="IdOfLastCourseSlideAccessed"/>
   </class>
 </hibernate-mapping>

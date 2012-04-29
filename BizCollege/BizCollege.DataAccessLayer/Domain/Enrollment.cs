@@ -15,11 +15,33 @@ namespace BizCollege.DataAccessLayer.Domain
     /// </summary>
     public class Enrollment
     {
+        /// <summary>
+        /// The internal Id of the item in the database (assigned
+        /// by NHibernate after the item is initially persisted)
+        /// </summary>
         public string Id { get; set; }
         public string CourseId { get; set; }
         public DateTime DateStarted { get; set; }
 
         public bool WasCourseCompleted { get; set; }
         public DateTime DateCompleted { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            Enrollment other = obj as Enrollment;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.Id.Equals(other.Id);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }

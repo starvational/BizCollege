@@ -18,6 +18,7 @@ namespace BizCollege.DataAccessLayer.Tests
             nhibernateConfig.Configure();
             nhibernateConfig.AddAssembly(typeof(BizCollege.DataAccessLayer.Domain.Enrollment).Assembly);
 
+            new SchemaUpdate(nhibernateConfig).Execute(false, true);
             new SchemaExport(nhibernateConfig).Execute(false, true, false);
         }
     }

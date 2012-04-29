@@ -12,12 +12,34 @@ namespace BizCollege.DataAccessLayer.Domain
     /// </summary>
     public class CourseContent
     {
+        /// <summary>
+        /// The internal Id of the item in the database (assigned
+        /// by NHibernate after the item is initially persisted)
+        /// </summary>
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         
         public ContentType CourseContentType { get; set; }
         public string ResourcePath { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            CourseContent other = obj as CourseContent;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.Id.Equals(other.Id);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 
     public enum ContentType

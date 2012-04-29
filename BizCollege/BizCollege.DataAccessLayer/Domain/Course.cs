@@ -21,11 +21,16 @@ namespace BizCollege.DataAccessLayer.Domain
     /// </summary>
     public class Course
     {
+        /// <summary>
+        /// The internal Id of the item in the database (assigned
+        /// by NHibernate after the item is initially persisted)
+        /// </summary>
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
         public string CreatedByUsername { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public DateTime LastUpdated { get; set; }
         public string LastUpdateByUsername { get; set; }
@@ -34,6 +39,25 @@ namespace BizCollege.DataAccessLayer.Domain
         public IList<CourseContent> CourseSlides { get; set; }
 
         public int NumberOfCourseCompletions { get; set; }
+        public string IdOfLastCourseSlideAccessed { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            Course other = obj as Course;
+            if (other == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.Id.Equals(other.Id);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 
     public enum CourseState
