@@ -8,10 +8,10 @@
       <generator class="assigned"/>
     </id>
 
-    <set name="StudentCourseEnrollments" cascade="all-delete-orphan">
+    <bag name="StudentCourseEnrollments" cascade="all-delete-orphan">
       <key column="Id"/>
       <many-to-many column="fk_enrollmentId" class="Enrollment"/>
-    </set>
+    </bag>
     
   </class>
 </hibernate-mapping>

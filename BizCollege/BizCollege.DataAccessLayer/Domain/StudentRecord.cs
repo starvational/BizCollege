@@ -13,7 +13,7 @@ namespace BizCollege.DataAccessLayer.Domain
     public class StudentRecord
     {
         public string Username { get; set; }
-        public HashSet<Enrollment> StudentCourseEnrollments { get; set; }
+        public IList<Enrollment> StudentCourseEnrollments { get; set; }
 
         public override bool Equals(object obj)
         {

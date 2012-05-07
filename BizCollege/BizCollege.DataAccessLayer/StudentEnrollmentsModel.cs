@@ -50,7 +50,7 @@ namespace BizCollege.DataAccessLayer
             var student = m_enrollmentsRepo.Get(username);
             if (student == null)
             {
-                student = new StudentRecord() { Username = username, StudentCourseEnrollments = new HashSet<Enrollment>() };
+                student = new StudentRecord() { Username = username, StudentCourseEnrollments = new List<Enrollment>() };
             }
 
             // Throw an error if the student is already enrolled in this course
