@@ -60,7 +60,17 @@ namespace BizCollege.DataAccessLayer.Tests
         [Test]
         public void CanRemoveStudentEnrollment()
         {
-            
+            // Create a dummy student enrollment record
+            string username = "kevinmitnick";
+
+            var dummyCourse = DummyDataGenerator.CreateDummyCourse();
+            ICoursesModel courseModel = new CoursesModel();
+            dummyCourse.Id = courseModel.AddOrUpdateCourse(dummyCourse).Id;
+
+
+            // add the new enrollment for the given user and specified course
+            IStudentEnrollmentsModel model = new StudentEnrollmentsModel();
+            StudentRecord studentEnrollmentRecord = model.AddEnrollment(username, dummyCourse.Id);
         }
 
         [Test]
