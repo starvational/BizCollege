@@ -39,7 +39,6 @@ namespace BizCollege.DataAccessLayer.Domain
         public IList<CourseContent> CourseSlides { get; set; }
 
         public int NumberOfCourseCompletions { get; set; }
-        public string IdOfLastCourseSlideAccessed { get; set; }
 
         public override bool Equals(object obj)
         {

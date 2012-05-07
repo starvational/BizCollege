@@ -25,6 +25,7 @@ namespace BizCollege.DataAccessLayer.Domain
 
         public bool WasCourseCompleted { get; set; }
         public DateTime DateCompleted { get; set; }
+        public string IdOfLastCourseSlideAccessed { get; set; }
 
         public override bool Equals(object obj)
         {
