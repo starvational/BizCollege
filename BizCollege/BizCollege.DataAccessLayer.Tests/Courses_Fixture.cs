@@ -65,23 +65,92 @@ namespace BizCollege.DataAccessLayer.Tests
             Assert.IsNull(fromDb);
         }
 
-        #region unimplemented tests
         [Test]
         public void CanUpdateExistingCourse()
         {
-            throw new NotImplementedException();
+            // Create a dummy course and add it to the database
+            var dummyCourse = CreateDummyCourse();
+            ICoursesModel model = new CoursesModel();
+            dummyCourse.Id = model.AddOrUpdateCourse(dummyCourse).Id;
+
+            // Update the course by adding a course slide and changing
+            dummyCourse.CourseSlides.Add(new CourseContent()
+            {
+                CourseContentType = ContentType.Video,
+                Description = "This video talks about how to start your own business",
+                ResourcePath = "http://www.youtube.com",
+                Title = "Business Course Introduction Video"
+            });
+
+            // Also update the other properties of the coures
+            dummyCourse.Name = "Business Savvy 101";
+            dummyCourse.Description = "Tips on how to run a business properly";
+            dummyCourse.State = CourseState.Active;
+            dummyCourse.LastUpdateByUsername = "jamesdean";
+            dummyCourse.CreatedByUsername = "adalovelace";
+
+            //  Persist the course udpates to the database
+            model.AddOrUpdateCourse(dummyCourse);
+
+            // Retrieve a copy of the updated course back out from the Db
+            var repo = new BizCollegeRepository<Course, string>();
+            var fromDb = repo.Get(dummyCourse.Id);
+
+            // Check that the course properties we updated were persisted
+            Assert.NotNull(fromDb);
+            Assert.AreEqual(dummyCourse.Id, fromDb.Id);
+
+            Assert.AreEqual(dummyCourse.Name,                 fromDb.Name);
+            Assert.AreEqual(dummyCourse.Description,          fromDb.Description);
+            Assert.AreEqual(dummyCourse.State,                fromDb.State);
+            Assert.AreEqual(dummyCourse.LastUpdateByUsername, fromDb.LastUpdateByUsername);
+            Assert.AreEqual(dummyCourse.CreatedByUsername,    fromDb.CreatedByUsername);
+
+            Assert.NotNull(fromDb.CourseSlides[0]);
+            Assert.AreEqual(dummyCourse.CourseSlides.Count,                fromDb.CourseSlides.Count);
+            Assert.AreEqual(dummyCourse.CourseSlides[0].CourseContentType, fromDb.CourseSlides[0].CourseContentType);
+            Assert.AreEqual(dummyCourse.CourseSlides[0].Description,       fromDb.CourseSlides[0].Description);
+            Assert.AreEqual(dummyCourse.CourseSlides[0].ResourcePath,      fromDb.CourseSlides[0].ResourcePath);
+            Assert.AreEqual(dummyCourse.CourseSlides[0].Title,             fromDb.CourseSlides[0].Title);
+
+            // clean-up db
+            repo.Remove(fromDb.Id);
         }
 
         [Test]
         public void CanGetAllCourses()
         {
-            throw new NotImplementedException();
+            List<Course> dummyCourses = new List<Course>();
+            dummyCourses.Add(CreateDummyCourse());
+            dummyCourses.Add(CreateDummyCourse());
+
+            // Add two dummy courses to the database
+            ICoursesModel model = new CoursesModel();
+            dummyCourses[0].Id = model.AddOrUpdateCourse(dummyCourses[0]).Id;
+            dummyCourses[1].Id = model.AddOrUpdateCourse(dummyCourses[1]).Id;
+
+            // Retrieve all the courses in the database (should be only two we added above)
+            var repo = new BizCollegeRepository<Course, string>();
+            var allCoursesFromDb = repo.GetAllItems();
+
+            Assert.NotNull(allCoursesFromDb);
+            Assert.AreEqual(allCoursesFromDb.Count, dummyCourses.Count);
+
+            foreach (var courseInDb in allCoursesFromDb)
+            {
+                Assert.IsTrue(dummyCourses.Contains(courseInDb));
+            }
+
+            // clean up Db
+            repo.Remove(dummyCourses[0].Id);
+            repo.Remove(dummyCourses[1].Id);
         }
-        #endregion
 
         /// <summary>
-        /// Helper method that generates a Course to used for running the various course
-        /// tests that use a Course container to add to the database
+        /// Helper method that generates an unpersisted Course object with
+        /// a variety of its fields pre-populated with dummy data.  This is
+        /// so we can easily generate unit test data to add/modify the courses
+        /// data store in the BizCollege database
         /// </summary>
         /// <returns></returns>
         private Course CreateDummyCourse()
