@@ -3,7 +3,7 @@
   <Class Name="BizCollege.DataAccessLayer.Domain.Course">
     <Position X="1.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAEgAAAEAAAAAAUAAAAAAAAAACAABAACAAA=</HashCode>
+      <HashCode>QgACAAAAAAEgAAAEgAAAAAUAAAAAAIAAACAABAACAAA=</HashCode>
       <FileName>Domain\Course.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -16,7 +16,7 @@
   <Class Name="BizCollege.DataAccessLayer.Domain.StudentRecord">
     <Position X="9.25" Y="0.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAgQAAAAAAAAAAAIAAAAAAAAAAEAA=</HashCode>
       <FileName>Domain\StudentRecord.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -26,7 +26,7 @@
   <Class Name="BizCollege.DataAccessLayer.Domain.CourseContent">
     <Position X="5" Y="0.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAACAABAAAAgAEAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAABAAAAgAEAAgAAAAACAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Domain\CourseContent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -36,19 +36,19 @@
   <Class Name="BizCollege.DataAccessLayer.Domain.Enrollment">
     <Position X="9.75" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAGCEAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAGCEAAAAAAAAAAgAAAAAAAAAAAAoAAAAAAAAAAAAA=</HashCode>
       <FileName>Domain\Enrollment.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="BizCollege.DataAccessLayer.Domain.CourseState">
-    <Position X="1.5" Y="3.25" Width="1.5" />
+    <Position X="1.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAIAAAAAAA=</HashCode>
       <FileName>Domain\Course.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="BizCollege.DataAccessLayer.Domain.ContentType">
-    <Position X="5.75" Y="3" Width="1.5" />
+    <Position X="5.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAACAAAACAAAAABAAABg=</HashCode>
       <FileName>Domain\CourseContent.cs</FileName>
