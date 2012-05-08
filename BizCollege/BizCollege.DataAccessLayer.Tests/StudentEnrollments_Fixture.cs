@@ -6,6 +6,7 @@ using NUnit.Framework;
 using BizCollege.DataAccessLayer.Domain;
 using BizCollege.DataAccessLayer.Repository;
 using BizCollege.DataAccessLayer.Tests.Helper;
+using BizCollege.DataAccessLayer.Helper;
 
 namespace BizCollege.DataAccessLayer.Tests
 {
@@ -16,11 +17,11 @@ namespace BizCollege.DataAccessLayer.Tests
         public void Setup()
         {
             // Uncomment to debug the tests when using NUnit gui
-            System.Diagnostics.Debugger.Launch();
+            //System.Diagnostics.Debugger.Launch();
         }
 
         [Test]
-        public void CanAddNewStudentEnrollment()
+        public void CanAddNewStudentCourseEnrollment()
         {
             // dummy username (provided by an external accounts
             // data store (e.g. ASP .net membership/authentication)
@@ -33,17 +34,15 @@ namespace BizCollege.DataAccessLayer.Tests
             ICoursesModel courseModel = new CoursesModel();
             dummyCourse.Id = courseModel.AddOrUpdateCourse(dummyCourse).Id;
 
-
             // add the new enrollment for the given user and specified course
             IStudentEnrollmentsModel model = new StudentEnrollmentsModel();
             StudentRecord studentEnrollmentRecord = model.AddEnrollment(username, dummyCourse.Id);
 
             Assert.NotNull(studentEnrollmentRecord);
             Assert.IsNotNullOrEmpty(studentEnrollmentRecord.Username);
+            Assert.AreEqual(studentEnrollmentRecord.Username, username);
             Assert.NotNull(studentEnrollmentRecord.StudentCourseEnrollments);
             Assert.AreEqual(studentEnrollmentRecord.StudentCourseEnrollments.Count, 1);
-
-            Assert.AreEqual(studentEnrollmentRecord.Username, username);
 
             var enrollments = new List<Enrollment>(studentEnrollmentRecord.StudentCourseEnrollments);
             Assert.AreEqual(enrollments[0].CourseId, dummyCourse.Id);
@@ -60,28 +59,145 @@ namespace BizCollege.DataAccessLayer.Tests
         [Test]
         public void CanRemoveStudentEnrollment()
         {
-            // Create a dummy student enrollment record
+            // dummy username and course id
             string username = "kevinmitnick";
+            string courseId = Guid.NewGuid().ToString();
 
-            var dummyCourse = DummyDataGenerator.CreateDummyCourse();
-            ICoursesModel courseModel = new CoursesModel();
-            dummyCourse.Id = courseModel.AddOrUpdateCourse(dummyCourse).Id;
+            // Add the dummy student enrollment via the internal repository interfaces
+            var dummyEnrollment = new StudentRecord() { Username = username };
+            dummyEnrollment.StudentCourseEnrollments = new List<Enrollment>();
+            dummyEnrollment.StudentCourseEnrollments.Add(
+                new Enrollment()
+                {
+                    CourseId = courseId,
+                    DateStarted = DateTime.Now,
+                    DateCompleted = SqlServerHelper.GetSqlServerMinimumDateTimeValue()
+                }
+            );
+            var enrollmentsRepo = new BizCollegeRepository<StudentRecord, string>();
+            dummyEnrollment = enrollmentsRepo.AddOrUpdate(dummyEnrollment);
 
+            // Remove the enrollment via the enrollmnent model interface that the webapp
+            // will use to remove a student's enrollment from their record
+            IStudentEnrollmentsModel enrollmentsModel = new StudentEnrollmentsModel();
+            enrollmentsModel.RemoveEnrollment(username, courseId);
 
-            // add the new enrollment for the given user and specified course
-            IStudentEnrollmentsModel model = new StudentEnrollmentsModel();
-            StudentRecord studentEnrollmentRecord = model.AddEnrollment(username, dummyCourse.Id);
+            // retrieve the enrollment record from the Db and ensure the student has
+            // no enrollments in his/her student record
+            var fromDb = enrollmentsRepo.Get(username);
+
+            Assert.NotNull(fromDb);
+            Assert.AreEqual(fromDb.Username, username);
+            Assert.AreEqual(fromDb.StudentCourseEnrollments.Count, 0);
+
+            // clean up Db
+            enrollmentsRepo.Remove(fromDb.Username);
         }
 
         [Test]
-        public void CanUpdateExistingStudentEnrollment()
+        public void CanUpdateExistingStudentEnrollmentsCollection()
         {
-            throw new NotImplementedException();
+            // dummy username and dummy courses
+            string username = "kevinmitnick";
+            var dummyCourse1 = DummyDataGenerator.CreateDummyCourse();
+            var dummyCourse2 = DummyDataGenerator.CreateDummyCourse();
+
+            // Add the dummy courses to the database via the internal course repository interface
+            IRepository<Course, string> coursesRepo = new BizCollegeRepository<Course, string>();
+            dummyCourse1.Id = coursesRepo.AddOrUpdate(dummyCourse1).Id;
+            dummyCourse2.Id = coursesRepo.AddOrUpdate(dummyCourse2).Id;
+
+            // Add the dummy student enrollment via the internal enrollments repository interfaces
+            var dummyEnrollment = new StudentRecord() { Username = username };
+            dummyEnrollment.StudentCourseEnrollments = new List<Enrollment>();
+            dummyEnrollment.StudentCourseEnrollments.Add(
+                new Enrollment()
+                {
+                    CourseId = dummyCourse1.Id,
+                    DateStarted = DateTime.Now,
+                    DateCompleted = SqlServerHelper.GetSqlServerMinimumDateTimeValue()
+                }
+            );
+
+            var enrollmentsRepo = new BizCollegeRepository<StudentRecord, string>();
+            dummyEnrollment = enrollmentsRepo.AddOrUpdate(dummyEnrollment);
+
+            // To update the student enrollment, we'll add another enrollment to their
+            // current enrollment record (so we should have two enrollments after the update)
+            IStudentEnrollmentsModel model = new StudentEnrollmentsModel();
+            var updatedRecord = model.AddEnrollment(username, dummyCourse2.Id);
+
+            Assert.NotNull(updatedRecord);
+            Assert.IsNotNullOrEmpty(updatedRecord.Username);
+            Assert.AreEqual(updatedRecord.Username, username);
+
+            Assert.NotNull(updatedRecord);
+            Assert.IsNotNullOrEmpty(updatedRecord.Username);
+            Assert.NotNull(updatedRecord.StudentCourseEnrollments);
+            Assert.AreEqual(updatedRecord.StudentCourseEnrollments.Count, 2);
+
+            var updatedEnrollments = new List<Enrollment>(updatedRecord.StudentCourseEnrollments);
+            Assert.AreEqual(updatedEnrollments[0].CourseId, dummyCourse1.Id);
+            Assert.AreEqual(updatedEnrollments[1].CourseId, dummyCourse2.Id);
+
+            // Clean up Db
+            enrollmentsRepo.Remove(username);
+            coursesRepo.Remove(dummyCourse1.Id);
+            coursesRepo.Remove(dummyCourse2.Id);
         }
 
         [Test]
         public void CanGetStudentEnrollment()
         {
+            // dummy username and course id
+            string username = "kevinmitnick";
+            string courseId = Guid.NewGuid().ToString();
+
+            // Add the dummy student enrollment via the internal repository interfaces
+            var dummyEnrollment = new StudentRecord(){ Username = username};
+            dummyEnrollment.StudentCourseEnrollments = new List<Enrollment>();
+            dummyEnrollment.StudentCourseEnrollments.Add(
+                new Enrollment()
+                {
+                    CourseId = courseId,
+                    DateStarted = DateTime.Now,
+                    DateCompleted = SqlServerHelper.GetSqlServerMinimumDateTimeValue()
+                }
+            );
+            var enrollmentsRepo = new BizCollegeRepository<StudentRecord, string>();
+            dummyEnrollment = enrollmentsRepo.AddOrUpdate(dummyEnrollment);
+
+            // Get the student record via the enrollments model interface that the web
+            // application will use to retrieve student enrollment records by username
+            IStudentEnrollmentsModel enrollmentsModel = new StudentEnrollmentsModel();
+            var fromDb = enrollmentsModel.GetStudentRecord(username);
+
+            Assert.NotNull(fromDb);
+            Assert.AreEqual(fromDb.Username, dummyEnrollment.Username);
+            Assert.NotNull(fromDb.StudentCourseEnrollments);
+            Assert.AreEqual(fromDb.StudentCourseEnrollments.Count, dummyEnrollment.StudentCourseEnrollments.Count);
+            Assert.AreEqual(fromDb.StudentCourseEnrollments[0].Id, dummyEnrollment.StudentCourseEnrollments[0].Id);
+            Assert.AreEqual(fromDb.StudentCourseEnrollments[0].CourseId, dummyEnrollment.StudentCourseEnrollments[0].CourseId);
+            Assert.AreEqual(fromDb.StudentCourseEnrollments[0].DateCompleted, dummyEnrollment.StudentCourseEnrollments[0].DateCompleted);
+
+            // Clean up Db
+            enrollmentsRepo.Remove(username);
+        }
+
+        [Test]
+        public void CanSetStudentEnrollmentCourseCompletion()
+        {
+            // To be completed by someone else on the team
+            // Either Ayman or Thaison
+            //
+            // Tip:  Use the IStudentEnrollmentsModel.AddEnrollment to add a new dummy
+            //       enrollment, then IStudentEnrollmentsModel.SetStudentCourseCompletion
+            //       to set the course completion for that student's course.  Then use
+            //       the internal IRepository<StudentRecord, string> interface to retrive
+            //       the record from the database and make sure that course was set to
+            //       complete.
+            //       After you're done with the test, remove the dummy enrollment from 
+            //       the unit test database
             throw new NotImplementedException();
         }
     }

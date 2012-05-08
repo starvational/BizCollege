@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BizCollege.DataAccessLayer.Domain;
+using BizCollege.DataAccessLayer.Helper;
 
 namespace BizCollege.DataAccessLayer.Tests.Helper
 {
@@ -22,6 +23,8 @@ namespace BizCollege.DataAccessLayer.Tests.Helper
             dummyCourse.State = CourseState.Inactive;
             dummyCourse.LastUpdateByUsername = "miguel";
             dummyCourse.CourseSlides = new List<CourseContent>();
+            dummyCourse.CreationDate = SqlServerHelper.GetSqlServerMinimumDateTimeValue();
+            dummyCourse.LastUpdated = SqlServerHelper.GetSqlServerMinimumDateTimeValue();
 
             return dummyCourse;
         }

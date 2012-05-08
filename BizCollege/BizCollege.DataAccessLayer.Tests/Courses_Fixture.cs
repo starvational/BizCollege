@@ -146,5 +146,20 @@ namespace BizCollege.DataAccessLayer.Tests
             repo.Remove(dummyCourses[0].Id);
             repo.Remove(dummyCourses[1].Id);
         }
+
+        [Test]
+        public void CanGetCourseByCourseId()
+        {
+            // To be completed by someone else on the team
+            // Either Ayman or Thaison
+            //
+            // Tip:  first add a dummy course to the DB via the internal
+            //       IRepository<Course, string> interface, then retrieve 
+            //       the persisted course via the ICourseModel interface 
+            //       that the WebApp should be using to retrieve a given course.
+            //       After you're done with the test, remove the dummy course
+            //       from the unit test database.
+            throw new NotImplementedException();
+        }
     }
 }

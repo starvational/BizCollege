@@ -168,10 +168,5 @@ namespace BizCollege.DataAccessLayer
                 }
             }
         }
-
-        public Domain.StudentRecord GetStudentEnrollmentInfo(string username)
-        {
-            return m_enrollmentsRepo.Get(username);
-        }
     }
 }
