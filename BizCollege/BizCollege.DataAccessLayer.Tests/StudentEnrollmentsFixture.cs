@@ -11,7 +11,7 @@ using BizCollege.DataAccessLayer.Helper;
 namespace BizCollege.DataAccessLayer.Tests
 {
     [TestFixture]
-    public class StudentEnrollments_Fixture
+    public class StudentEnrollmentsFixture
     {
         [SetUp]
         public void Setup()

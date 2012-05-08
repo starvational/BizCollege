@@ -9,7 +9,7 @@ using NHibernate.Tool.hbm2ddl;
 namespace BizCollege.DataAccessLayer.Tests
 {
     [TestFixture]
-    public class GenerateSchema_Fixture
+    public class GenerateSchemaFixture
     {
         [Test]
         public void Can_generate_schema()

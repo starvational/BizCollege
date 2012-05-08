@@ -10,7 +10,7 @@ using BizCollege.DataAccessLayer.Tests.Helper;
 namespace BizCollege.DataAccessLayer.Tests
 {
     [TestFixture]
-    public class Courses_Fixture
+    public class CoursesFixture
     {
         [SetUp]
         public void Setup()
