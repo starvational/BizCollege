@@ -1,44 +1,95 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System;
 using System.Web.Mvc;
-using BizCollegeItr.Models;
+using BizCollege.DataAccessLayer;
+using BizCollege.DataAccessLayer.Domain;
+using BizCollegeMvc.Models;
+using BizCollegeMvc.Services;
+using NHibernate.Mapping;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace BizCollegeItr.Controllers
-{   
+namespace BizCollegeMvc.Controllers
+{
+    [Authorize]
     public class CoursesController : Controller
     {
-        private BizCollegeItrContext context = new BizCollegeItrContext();
+
+        private CoursesService _contextCoursesService;
+        private EnrollmentService _contextEnrollmentService; 
+
+        public CoursesController()
+        {
+            _contextCoursesService = new CoursesService();
+            _contextEnrollmentService = new EnrollmentService(); 
+        }
 
         //
         // GET: /Courses/
 
         public ActionResult Index()
         {
-
-            if (User.Identity.IsAuthenticated)
+            String contextUserName = User.Identity.Name;
+            if (String.IsNullOrEmpty(contextUserName))
             {
-                // get course fors logged-in user.. 
-                // right now, we'll return dummy data.  
-                return View("Index", GetDummyCourses());
-
+                ViewBag.Message = "we couldn't locate your profile";
+                return View("Error");
             }
-            else 
+            StudentRecord studentRecord = null;
+            List<StudentEnrollmentViewModel> listOfEnrolledCourses = null; 
+            try
             {
-                return RedirectToAction("LogOn", "Account");
+                var enrollmentModel = new StudentEnrollmentsModel();
+                studentRecord = enrollmentModel.GetStudentRecord(contextUserName); 
+                if (studentRecord == null)
+                {
+                    ViewBag.Message = "we couldn't locate your profile";
+                    return View("Error");
+                } 
+                // TO DO: 
+                // Find a more elegant way to do this 
+                // probably move it to the service. 
+                listOfEnrolledCourses = new List<StudentEnrollmentViewModel>(); 
+
+                foreach (var item in studentRecord.StudentCourseEnrollments)
+                {
+                    listOfEnrolledCourses.Add(new StudentEnrollmentViewModel { 
+                        Course = _contextCoursesService.GetCourse(item.CourseId), 
+                        EnrollmentInfo = item
+                    }); 
+                }
             }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View("Error");
+            }
+
+            return View(listOfEnrolledCourses);
         }
 
         //
-        // GET: /Courses/Details/5
+        // GET: /Courses/Details/DummyClass
 
-        public ViewResult Details(int id)
+        public ActionResult Details(String id)
         {
-            Course course = context.Courses.Single(x => x.CourseId == id);
-            return View(course);
+
+            if (!_contextEnrollmentService.IsStudentEnrolled(User.Identity.Name, id))
+            {
+                ViewBag.Message = "you're not enrolled in this course";
+                return View("Error");
+            }
+
+            var enrollmentInfo = _contextEnrollmentService.GetEnrollmetnInfo(
+                User.Identity.Name, id);
+            var courseInfo = _contextCoursesService.GetCourse(
+                enrollmentInfo.CourseId);
+            var courseEnrollment = new StudentEnrollmentViewModel
+            {
+                Course = courseInfo,
+                EnrollmentInfo = enrollmentInfo
+            };
+
+            return View(courseEnrollment);
         }
 
         //
@@ -47,111 +98,108 @@ namespace BizCollegeItr.Controllers
         public ActionResult Create()
         {
             return View();
-        } 
+        }
 
         //
         // POST: /Courses/Create
 
         [HttpPost]
-        public ActionResult Create(Course course)
+        public ActionResult Create(FormCollection collection)
         {
-            if (ModelState.IsValid)
+            try
             {
-                context.Courses.Add(course);
-                context.SaveChanges();
-                return RedirectToAction("Index");  
-            }
+                // TODO: Add insert logic here
 
-            return View(course);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
-        
+
         //
         // GET: /Courses/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
-            Course course = context.Courses.Single(x => x.CourseId == id);
-            return View(course);
+            return View();
         }
 
         //
         // POST: /Courses/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Course course)
+        public ActionResult Edit(int id, FormCollection collection)
         {
-            if (ModelState.IsValid)
+            try
             {
-                context.Entry(course).State = EntityState.Modified;
-                context.SaveChanges();
+                // TODO: Add update logic here
+
                 return RedirectToAction("Index");
             }
-            return View(course);
+            catch
+            {
+                return View();
+            }
         }
 
         //
         // GET: /Courses/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
-            Course course = context.Courses.Single(x => x.CourseId == id);
-            return View(course);
+            return View();
         }
 
         //
         // POST: /Courses/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
         {
-            Course course = context.Courses.Single(x => x.CourseId == id);
-            context.Courses.Remove(course);
-            context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+            try
+            {
+                // TODO: Add delete logic here
 
-        #region [ Private Methods ]  
-        private List<Course> GetListOfCourses()
-        {
-            return new List<Course> 
-            { 
-                 new Course{Title = "Business 101", Description = "Introduction to business.", DateCreated = DateTime.Now.Subtract(TimeSpan.FromDays(20)), CourseId = 1}, 
-                 new Course{Title = "Accounting 101", Description = "Introduction to accounting.", DateCreated = DateTime.Now.Subtract(TimeSpan.FromDays(20)), CourseId = 2},  
-                 new Course{Title = "Finance 101", Description = "Introduction to finance.", DateCreated = DateTime.Now.Subtract(TimeSpan.FromDays(20)), CourseId = 3},  
-                 new Course{Title = "Tax Regulation ", Description = "Introduction to tax regulations.", DateCreated = DateTime.Now.Subtract(TimeSpan.FromDays(20)), CourseId = 4},  
-                 new Course{Title = "Business Law ", Description = "Introduction to business law.", DateCreated = DateTime.Now.Subtract(TimeSpan.FromDays(20)), CourseId = 5}, 
-                 new Course{Title = "Business Etiquette", Description = "Introduction to business law.", DateCreated = DateTime.Now.Subtract(TimeSpan.FromDays(20)), CourseId = 6}
-            }; 
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+
+
         }
-        private List<CourseHistory> GetDummyCourses()
+       
+        /// <summary>
+        /// Enrolls a user into a certain course
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
+        public ActionResult Enroll(String username, String courseId)
         {
-            var courses = GetListOfCourses(); 
-            return new List<CourseHistory> 
-            { 
-                new CourseHistory
-                {
-                    Course = courses[0], 
-                    CourseId = courses[4].CourseId, 
-                    CourseStatus = (int)CourseCompletionStatus.Completed, 
-                    StartedOn = DateTime.Now.Subtract(TimeSpan.FromDays(3))
-                }, 
-                new CourseHistory
-                {
-                    Course = courses[2], 
-                    CourseId = courses[4].CourseId, 
-                    CourseStatus = (int)CourseCompletionStatus.NotStarted, 
-                    StartedOn = DateTime.Now.Subtract(TimeSpan.FromDays(5))
-                },
-                 new CourseHistory
-                {
-                    Course = courses[4], 
-                    CourseId = courses[4].CourseId, 
-                    CourseStatus = (int)CourseCompletionStatus.Started, 
-                    StartedOn = DateTime.Now.Subtract(TimeSpan.FromDays(1))
-                },
- 
+            JsonOperationResult retVal = new JsonOperationResult
+            {
+                ErrorCode = ErrorCodes.Success
             };
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(courseId))
+            {
+                // return erorr code. invalide data 
+                retVal.Message = "Course Id or Username is not valid.";
+                retVal.ErrorCode = ErrorCodes.InvalidData;
+            }
+            try
+            {
+                _contextEnrollmentService.EnrollStudent(username, courseId);
+            }
+            catch (Exception ex)
+            {
+                retVal.Message = ex.Message;
+                retVal.ErrorCode = ErrorCodes.Fail;
+            }
+            return Json(retVal, JsonRequestBehavior.AllowGet);
         }
-        #endregion
     }
 }

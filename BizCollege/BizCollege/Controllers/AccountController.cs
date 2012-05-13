@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using BizCollegeItr.Models;
+using BizCollegeMvc.Models;
 
-namespace BizCollegeItr.Controllers
+namespace BizCollegeMvc.Controllers
 {
     public class AccountController : Controller
     {

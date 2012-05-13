@@ -1,47 +1,37 @@
-@model IEnumerable<BizCollegeItr.Models.CourseHistory>
+﻿@model IEnumerable<BizCollegeMvc.Models.StudentEnrollmentViewModel>
 @{
     ViewBag.Title = "Index";
 }
+<h2>
+    Your courses...
+</h2>
 <table>
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                <h3>
-                    @Html.ActionLink(item.Course.Title, "Details", new { id = item.Id })
-                </h3>
-                @(item.Course == null ? "None" : item.Course.Description)
+                <div>
+                    @Html.ActionLink(item.Course.Name, "Details", new { item.Course.Id })
+                    <br />
+                    @item.Course.Description
+                </div>
             </td>
             <td>
-                @{
-            var statusString = Html.GetCompetionStatus(item.CourseStatus); 
-                }
-                @if (item.CourseStatus == 1)
+                @if (item.EnrollmentInfo.DateStarted == DateTime.MinValue)
                 {
                     // not started.  
-                    <div class="pending">
-                        @String.Format("{0} ", statusString)
-                    </div>            
+                    <em class="NotStarted">Not Started </em>
                 }
-                else if (item.CourseStatus == 2)
-                {
-                    // started.  
-                    <div>
-                        @String.Format("{0} on {1} ", statusString, item.StartedOn.ToShortDateString())
-                    </div>   
-                }
-                else if (item.CourseStatus == 3)
-                {
-                    // started.  
-                    <div class="completed">
-                        @String.Format("{0} on {1} ", statusString, item.StartedOn.ToShortDateString())
-                    </div>   
+                else if (item.EnrollmentInfo.WasCourseCompleted)
+                { 
+                    @:Completed on <em class="finished"> @item.EnrollmentInfo.DateCompleted.ToShortDateString()</em>
                 }
                 else
-                {
-                    // do nothing  
-                }
+                { 
+                    @:Started on <em> @item.EnrollmentInfo.DateStarted.ToShortDateString()</em>
+                                }
             </td>
         </tr>
+
     }
 </table>

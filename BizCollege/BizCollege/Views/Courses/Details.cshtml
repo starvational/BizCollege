@@ -1,26 +1,85 @@
-@model BizCollegeItr.Models.Course
-
+﻿@model BizCollegeMvc.Models.StudentEnrollmentViewModel
 @{
     ViewBag.Title = "Details";
 }
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        // page is loaded.. 
+        // attempt to fetch the last accessed slide    
+        // get the required values 
 
-<h2>Details</h2>
+        var lastSlideId = $("#hiddenLastViewedSlideIndex").val();
 
-<fieldset>
-    <legend>Course</legend>
+        loadSlide(lastSlideId);
 
-    <div class="display-label">Title</div>
-    <div class="display-field">@Model.Title</div>
+    });
 
-    <div class="display-label">Description</div>
-    <div class="display-field">@Model.Description</div>
+    function loadSlide(slideNumber) {
 
-    <div class="display-label">DateCreated</div>
-    <div class="display-field">@String.Format("{0:g}", Model.DateCreated)</div>
-</fieldset>
+        var courseId = $("#hiddenCourseId").val();
+        var getPageUrl = "../../CourseContents/GetSlide?courseId=" + courseId + "&slideIndex=" + slideNumber;
+        $("#contentContainer").load(getPageUrl, function (response, status, xhr) {
+
+            if (status == "error") {
+                var msg = "Sorry but there was an error: ";
+                $("#contentContainer").html(msg + xhr.status + " " + xhr.statusText);
+            }
+            else {
+                // increment last slide viewed.. 
+                var lastViewedIndex = $("#hiddenLastViewedSlideIndex").val();
+                lastViewedIndex++;
+                $("#hiddenLastViewedSlideIndex").val(lastViewedIndex);
+
+            }
+
+
+        })
+    }
+</script>
+<div id="contentwrapper">
+    <div id="contentcolumn">
+        <div class="innertube">
+        </div>
+        <div id="contentContainer">
+        </div>
+        <div id="slideController">
+            <center>
+                @{int currentSlide = Model.EnrollmentInfo.LastViewedSlideIndex + 1;
+                  int previousSlide = currentSlide - 1; 
+                }
+                <input type="button" id="btnPreviousSlide" value = "<<" onclick = "loadSlide('@previousSlide')" />
+                @currentSlide
+                / @Model.Course.CourseSlides.Count()
+                <input type="button" id="btnNextSlide" value = ">>" onclick = "loadSlide('@currentSlide')" />
+            </center>
+        </div>
+    </div>
+</div>
+<div id="leftcolumn">
+    <div class="innertube">
+        <b>@Model.Course.Name</b>
+        <br />
+        <em>
+            @Model.Course.Description
+        </em>
+        <br />
+        You started this course on <em>@Model.EnrollmentInfo.DateStarted.ToShortDateString()
+        </em>
+        @if (Model.EnrollmentInfo.WasCourseCompleted)
+        {  
+            <em>and completed it on @Model.EnrollmentInfo.DateCompleted.ToShortDateString()
+            </em>
+        }
+    </div>
+</div>
+<div>
+    @Html.HiddenFor(model => model.Course.Id, new { Id = "hiddenCourseId", Name = "hiddenCourseId" })
+    @Html.HiddenFor(model => model.EnrollmentInfo.LastViewedSlideIndex, new { Id = "hiddenLastViewedSlideIndex", Name = "hiddenLastViewedSlideIndex" })
+</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.CourseId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model != null)
+    { 
+
+        @Html.ActionLink("<< Courses", "Index")
+    }
 </p>
-
-

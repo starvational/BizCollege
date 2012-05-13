@@ -19,7 +19,12 @@ namespace BizCollege.DataAccessLayer.Domain
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        
+
+        // TO DO: 
+        // This has to be reflected in the database to keep track of the order 
+        // of the slides inside a course. This index, should also be the one used 
+        // in the enrollment.lastViewedSlide. 
+        public int IndexInSquence { get { return 0; } set { int removeMe = value; } }
         public ContentType CourseContentType { get; set; }
         public string ResourcePath { get; set; }
 

@@ -1,0 +1,12 @@
+﻿@model BizCollege.DataAccessLayer.Domain.CourseContent
+<div>
+    @Model.Title
+</div>
+<div>
+    <audio controls> 
+        <source src="@Model.ResourcePath" type="audio/mp3"> </source>
+    </audio>
+</div>
+<div>
+    @Model.Description
+</div>
