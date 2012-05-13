@@ -15,5 +15,6 @@ namespace BizCollege.DataAccessLayer
         void RemoveEnrollment(string username, string courseId);
         StudentRecord GetStudentRecord(string username);
         void SetStudentCourseCompletion(string username, string courseId);
+        StudentRecord SetStudentEnrollmentLastViewedSlide(string username, string courseId, int LastViewedSlideIndex);
     }
 }

@@ -185,6 +185,38 @@ namespace BizCollege.DataAccessLayer.Tests
         }
 
         [Test]
+        public void CanSetStudentEnrollmentLastViewedSlide()
+        {
+            string username = "kevinmitnick";
+
+            // Create a dummy course
+            var dummyCourse = DummyDataGenerator.CreateDummyCourse();
+            ICoursesModel courseModel = new CoursesModel();
+            dummyCourse.Id = courseModel.AddOrUpdateCourse(dummyCourse).Id;
+
+            // add a new enrollment for the given user and specified dummy course
+            IStudentEnrollmentsModel model = new StudentEnrollmentsModel();
+            StudentRecord studentEnrollmentRecord = model.AddEnrollment(username, dummyCourse.Id);
+
+            // Simulate that the user last viewed/accessed slide 5 of the dummy course
+            int lastViewedSlideIndex = 5;
+
+            // Update the student enrollment for the dummy course with the specified last viewed slide index
+            StudentRecord updatedRecord = model.SetStudentEnrollmentLastViewedSlide(username, dummyCourse.Id, lastViewedSlideIndex);
+
+            Assert.NotNull(updatedRecord);
+            Assert.AreEqual(updatedRecord.StudentCourseEnrollments[0].LastViewedSlideIndex, lastViewedSlideIndex);
+
+            // clean up Db:  remove student record
+            var enrollmentsRepo = new BizCollegeRepository<StudentRecord, string>();
+            enrollmentsRepo.Remove(studentEnrollmentRecord.Username);
+
+            // clean up Db:  remove dummy course
+            var coursesRepo = new BizCollegeRepository<Course, string>();
+            coursesRepo.Remove(dummyCourse.Id);
+        }
+
+        [Test]
         public void CanSetStudentEnrollmentCourseCompletion()
         {
             // To be completed by someone else on the team

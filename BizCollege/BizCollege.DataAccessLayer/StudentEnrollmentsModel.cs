@@ -168,5 +168,58 @@ namespace BizCollege.DataAccessLayer
                 }
             }
         }
+
+        /// <summary>
+        /// Updates a student's course enrollment with the index of the last Course slide they viewed or 
+        /// accessed, so that next time they resume the course, the application will resume from the last
+        /// slide they were viewing.
+        /// </summary>
+        /// <param name="username">The student's username</param>
+        /// <param name="courseId">The unique id of the course (Course.Id)</param>
+        /// <param name="LastViewedSlideIndex">
+        ///     <para>The course slide sequence (CourseContent.IndexInSquence) of the last slide the user viewed/accessed</para>
+        /// </param>
+        /// <exception cref="System.InvalidOperationException">
+        ///     <para>
+        ///     1) If the student does not have a student record (aka no enrollments in the system)
+        ///     2) If the student was never enrolled in that course to begin with
+        ///     </para>
+        /// </exception>
+        /// <returns>A copy of the persisted/updated StudentRecord</returns>
+        public StudentRecord SetStudentEnrollmentLastViewedSlide(string username, string courseId, int LastViewedSlideIndex)
+        {
+            var studentRecord = m_enrollmentsRepo.Get(username);
+            if (studentRecord == null)
+            {
+                throw new InvalidOperationException("That user does not have a student enrollment record the system");
+            }
+            else
+            {
+                Enrollment enrollmentToUpdate = null;
+                foreach (var enrollment in studentRecord.StudentCourseEnrollments)
+                {
+                    if (enrollment.CourseId.Equals(courseId))
+                    {
+                        enrollmentToUpdate = enrollment;
+                        break;
+                    }
+                }
+
+                if (enrollmentToUpdate == null)
+                {
+                    throw new InvalidOperationException("That user was not enrolled in that course: " + courseId);
+                }
+                else
+                {
+                    // Update the enrollment with the last slide index the user viewed/accessed
+                    enrollmentToUpdate.LastViewedSlideIndex = LastViewedSlideIndex;
+                    
+                    // persist the changes
+                    studentRecord = m_enrollmentsRepo.AddOrUpdate(studentRecord);
+                }
+            }
+
+            return studentRecord;
+        }
     }
 }

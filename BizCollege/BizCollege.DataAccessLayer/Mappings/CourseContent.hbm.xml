@@ -12,6 +12,7 @@
     <property name="Description"/>
     <property name="CourseContentType"/>
     <property name="ResourcePath"/>
+    <property name="IndexInSquence"/>
 
   </class>
 </hibernate-mapping>

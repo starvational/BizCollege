@@ -80,7 +80,8 @@ namespace BizCollege.DataAccessLayer.Tests
                 CourseContentType = ContentType.Video,
                 Description = "This video talks about how to start your own business",
                 ResourcePath = "http://www.youtube.com",
-                Title = "Business Course Introduction Video"
+                Title = "Business Course Introduction Video",
+                IndexInSquence = 0,
             });
 
             // Also update the other properties of the coures
@@ -113,6 +114,7 @@ namespace BizCollege.DataAccessLayer.Tests
             Assert.AreEqual(dummyCourse.CourseSlides[0].Description,       fromDb.CourseSlides[0].Description);
             Assert.AreEqual(dummyCourse.CourseSlides[0].ResourcePath,      fromDb.CourseSlides[0].ResourcePath);
             Assert.AreEqual(dummyCourse.CourseSlides[0].Title,             fromDb.CourseSlides[0].Title);
+            Assert.AreEqual(dummyCourse.CourseSlides[0].IndexInSquence,    fromDb.CourseSlides[0].IndexInSquence);
 
             // clean-up db
             repo.Remove(fromDb.Id);

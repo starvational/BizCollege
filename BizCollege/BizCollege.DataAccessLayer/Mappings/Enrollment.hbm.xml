@@ -12,6 +12,7 @@
     <property name="WasCourseCompleted"/>
     <property name="DateCompleted"/>
     <property name="IdOfLastCourseSlideAccessed"/>
+    <property name="LastViewedSlideIndex"/>
     
   </class>
 </hibernate-mapping>

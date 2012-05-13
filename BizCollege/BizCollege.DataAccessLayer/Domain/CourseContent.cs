@@ -20,13 +20,20 @@ namespace BizCollege.DataAccessLayer.Domain
         public string Title { get; set; }
         public string Description { get; set; }
 
-        // TO DO: 
-        // This has to be reflected in the database to keep track of the order 
-        // of the slides inside a course. This index, should also be the one used 
-        // in the enrollment.lastViewedSlide. 
-        public int IndexInSquence { get { return 0; } set { int removeMe = value; } }
         public ContentType CourseContentType { get; set; }
         public string ResourcePath { get; set; }
+
+        /// <summary>
+        /// Each CourseContent slide that is part of a Course has a
+        /// sequence assigned by the Course Creator.  The IndexInSequence
+        /// property is the sequence value assigned to is by the
+        /// Course Creator and establishes the sequence that the Slide
+        /// should be presented in.  
+        /// 
+        /// For example, a CourseContent Slide with an IndexInSequence of zero 
+        /// is presented first.
+        /// </summary>
+        public int IndexInSquence { get; set; }
 
         public override bool Equals(object obj)
         {
