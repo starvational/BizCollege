@@ -27,20 +27,6 @@ namespace BizCollege.DataAccessLayer.Domain
         public DateTime DateCompleted { get; set; }
 
         /// <summary>
-        /// The CourseContent.Id of the the last course Slide the user
-        /// viewed/accessed.  So when the user resumes a Course, the
-        /// BizCollege web application will resume from the last course
-        /// Slide viewed.
-        /// 
-        /// TODO:  If we're retrieving Slides by their assigned index, we probably don't need to
-        ///        also keep track of them by their Id.  We should either track last slide accessed
-        ///        either by its assigned CourseContent.IndexInSquence or CourseContent.Id, but
-        ///        probably not both (for now, we'll keep them both until we can talk about this
-        ///        as a team)
-        /// </summary>
-        public string IdOfLastCourseSlideAccessed { get; set; }
-
-        /// <summary>
         /// The Slide index of the last viewed CourseContent slide, this slide
         /// index property should match the CourseContent.IndexInSquence property
         /// in one of the Course.CourseSlides

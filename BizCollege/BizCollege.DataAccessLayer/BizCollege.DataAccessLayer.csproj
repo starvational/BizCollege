@@ -85,7 +85,9 @@
     </Content>
     <Content Include="README.txt" />
     <EmbeddedResource Include="Mappings\StudentRecord.hbm.xml" />
-    <EmbeddedResource Include="Mappings\Enrollment.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Enrollment.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mappings\CourseContent.hbm.xml" />
     <EmbeddedResource Include="Mappings\Course.hbm.xml" />
   </ItemGroup>
