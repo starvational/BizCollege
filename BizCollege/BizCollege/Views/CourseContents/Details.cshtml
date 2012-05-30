@@ -1,0 +1,27 @@
+﻿@model IEnumerable<BizCollege.DataAccessLayer.Domain.CourseContent>
+ 
+ <h3> Current Slides in Course: </h3>
+<table>
+    <tr>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title) 
+            [@Html.DisplayFor(modelItem => item.CourseContentType)]
+           <br /> 
+            @Html.DisplayFor(modelItem => item.ResourcePath)
+            <br />
+            Order: @Html.DisplayFor(modelItem => item.IndexInSquence)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id, courseId = TempData["courseId"] })
+            |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id, courseId = TempData["courseId"] })
+        </td>
+    </tr>
+}
+
+</table>

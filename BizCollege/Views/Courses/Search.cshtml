@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+<h2>
+    Search</h2>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSearch").click(function () {
+
+            var searchKeywords = $("#keywords").val();
+            var getCoursesUrl = "../../Courses/GetCourses?keywords=" + searchKeywords;
+            $("#searchResults").load(getCoursesUrl, function (response, status, xhr) {
+
+            });
+        });
+    });  
+
+</script>
+<input type="text" id="keywords" />
+<input type="button" id="btnSearch" value="Find" />
+<div id="searchResults">
+</div>

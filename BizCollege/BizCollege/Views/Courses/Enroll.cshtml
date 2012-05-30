@@ -1,0 +1,12 @@
+﻿@model BizCollegeMvc.Models.JsonOperationResult
+@{
+    ViewBag.Title = "Enroll";
+}
+
+@if (Model.ErrorCode == BizCollegeMvc.Models.ErrorCodes.Fail)
+{ 
+    <h3>Student is already enrolled in this course..! </h3>
+}
+else { 
+    <h3>Student has been successfully enrolled in this course. Congrats! </h3>
+}

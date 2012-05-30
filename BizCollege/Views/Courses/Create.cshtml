@@ -1,0 +1,38 @@
+﻿@model BizCollege.DataAccessLayer.Domain.Course
+@{
+    ViewBag.Title = "Create";
+}
+<h2>
+    Create</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Course</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Description, new { @class = "description" })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            <input id="CreatedByUsername" type="hidden" value=@User.Identity.Name />
+        </div>
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

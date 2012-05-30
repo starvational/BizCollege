@@ -1,0 +1,33 @@
+﻿@model List<BizCollege.DataAccessLayer.Domain.Course> 
+@if (User.Identity != null)
+{ 
+    @Html.Hidden(User.Identity.Name, new { id = "username" });
+} 
+@if (Model == null || Model.Count == 0)
+{ 
+    <h3>
+        No courses were found
+    </h3>
+}
+else
+{ 
+    <table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div>
+                    <b>
+                        @item.Name
+                        </b>
+                        <br />
+                        @item.Description
+                    </div>
+                </td>
+                <td>
+                    @Html.ActionLink("Enroll", "Enroll", new { username = User.Identity.Name, courseId = @item.Id, isJson = false })
+                </td>
+            </tr>
+        }
+    </table>
+}
