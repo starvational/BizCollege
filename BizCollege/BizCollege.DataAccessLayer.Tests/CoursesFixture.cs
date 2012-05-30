@@ -152,16 +152,25 @@ namespace BizCollege.DataAccessLayer.Tests
         [Test]
         public void CanGetCourseByCourseId()
         {
-            // To be completed by someone else on the team
-            // Either Ayman or Thaison
-            //
-            // Tip:  first add a dummy course to the DB via the internal
-            //       IRepository<Course, string> interface, then retrieve 
-            //       the persisted course via the ICourseModel interface 
-            //       that the WebApp should be using to retrieve a given course.
-            //       After you're done with the test, remove the dummy course
-            //       from the unit test database.
-            throw new NotImplementedException();
+            var dummyCourse = DummyDataGenerator.CreateDummyCourse();
+
+            ICoursesModel model = new CoursesModel();
+            dummyCourse.Id = model.AddOrUpdateCourse(dummyCourse).Id;
+
+            var fromDb = model.GetCourse(dummyCourse.Id);
+
+            // Check the values against our dummy course
+            Assert.NotNull(fromDb);
+            Assert.AreEqual(dummyCourse.Id, fromDb.Id);
+            Assert.AreEqual(dummyCourse.Name, fromDb.Name);
+            Assert.AreEqual(dummyCourse.Description, fromDb.Description);
+            Assert.AreEqual(dummyCourse.CreatedByUsername, fromDb.CreatedByUsername);
+            Assert.AreEqual(dummyCourse.LastUpdateByUsername, fromDb.LastUpdateByUsername);
+            Assert.AreEqual(dummyCourse.CourseSlides.Count, fromDb.CourseSlides.Count);
+
+            // clean-up db
+            var repo = new BizCollegeRepository<Course, string>();
+            repo.Remove(fromDb.Id);
         }
     }
 }

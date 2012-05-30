@@ -219,18 +219,34 @@ namespace BizCollege.DataAccessLayer.Tests
         [Test]
         public void CanSetStudentEnrollmentCourseCompletion()
         {
-            // To be completed by someone else on the team
-            // Either Ayman or Thaison
-            //
-            // Tip:  Use the IStudentEnrollmentsModel.AddEnrollment to add a new dummy
-            //       enrollment, then IStudentEnrollmentsModel.SetStudentCourseCompletion
-            //       to set the course completion for that student's course.  Then use
-            //       the internal IRepository<StudentRecord, string> interface to retrive
-            //       the record from the database and make sure that course was set to
-            //       complete.
-            //       After you're done with the test, remove the dummy enrollment from 
-            //       the unit test database
-            throw new NotImplementedException();
+            string username = "kevinmitnick";
+
+            // Create a dummy course and add it to the database
+            var dummyCourse = DummyDataGenerator.CreateDummyCourse();
+            ICoursesModel courseModel = new CoursesModel();
+            dummyCourse.Id = courseModel.AddOrUpdateCourse(dummyCourse).Id;
+
+            // add the new enrollment for the given user and specified course
+            IStudentEnrollmentsModel model = new StudentEnrollmentsModel();
+            StudentRecord studentEnrollmentRecord = model.AddEnrollment(username, dummyCourse.Id);
+
+            // set the course as completed
+            model.SetStudentCourseCompletion(username, dummyCourse.Id);
+
+            //  retrieve the record from the database and make sure that course 
+            // was set to complete.
+            var enrollmentsRepo = new BizCollegeRepository<StudentRecord, string>();
+            var fromDb = enrollmentsRepo.Get(studentEnrollmentRecord.Username);
+
+            Assert.NotNull(fromDb);
+            Assert.IsTrue(fromDb.StudentCourseEnrollments[0].WasCourseCompleted);
+
+            // clean up Db:  remove student record
+            enrollmentsRepo.Remove(studentEnrollmentRecord.Username);
+
+            // clean up Db:  remove dummy course
+            var coursesRepo = new BizCollegeRepository<Course, string>();
+            coursesRepo.Remove(dummyCourse.Id);
         }
     }
 }
