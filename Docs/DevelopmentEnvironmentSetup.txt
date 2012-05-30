@@ -1,0 +1,7 @@
+Visual Studio 2010 SP1
+SQL Server Express 2008
+ASP .Net MVC 3
+Scaffolding
+Microsoft.Web.Helpers
+
+Note:  dependencies can be installed via the Nuget packet manager
