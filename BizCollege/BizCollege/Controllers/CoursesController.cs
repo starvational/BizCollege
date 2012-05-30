@@ -14,13 +14,13 @@ namespace BizCollegeMvc.Controllers
     public class CoursesController : Controller
     {
 
-        private CoursesService _contextCoursesService;
-        private EnrollmentService _contextEnrollmentService; 
+        private CoursesService m_contextCoursesService;
+        private EnrollmentService m_contextEnrollmentService; 
 
         public CoursesController()
         {
-            _contextCoursesService = new CoursesService();
-            _contextEnrollmentService = new EnrollmentService(); 
+            m_contextCoursesService = new CoursesService();
+            m_contextEnrollmentService = new EnrollmentService(); 
         }
 
         //
@@ -42,7 +42,7 @@ namespace BizCollegeMvc.Controllers
                 studentRecord = enrollmentModel.GetStudentRecord(contextUserName); 
                 if (studentRecord == null)
                 {
-                    ViewBag.Message = "we couldn't locate your profile";
+                    ViewBag.Message = "We could not locate any courses you were registered for";
                     return View("Error");
                 } 
                 // TO DO: 
@@ -53,7 +53,7 @@ namespace BizCollegeMvc.Controllers
                 foreach (var item in studentRecord.StudentCourseEnrollments)
                 {
                     listOfEnrolledCourses.Add(new StudentEnrollmentViewModel { 
-                        Course = _contextCoursesService.GetCourse(item.CourseId), 
+                        Course = m_contextCoursesService.GetCourse(item.CourseId), 
                         EnrollmentInfo = item
                     }); 
                 }
@@ -73,15 +73,15 @@ namespace BizCollegeMvc.Controllers
         public ActionResult Details(String id)
         {
 
-            if (!_contextEnrollmentService.IsStudentEnrolled(User.Identity.Name, id))
+            if (!m_contextEnrollmentService.IsStudentEnrolled(User.Identity.Name, id))
             {
                 ViewBag.Message = "you're not enrolled in this course";
                 return View("Error");
             }
 
-            var enrollmentInfo = _contextEnrollmentService.GetEnrollmetnInfo(
+            var enrollmentInfo = m_contextEnrollmentService.GetEnrollmentInfo(
                 User.Identity.Name, id);
-            var courseInfo = _contextCoursesService.GetCourse(
+            var courseInfo = m_contextCoursesService.GetCourse(
                 enrollmentInfo.CourseId);
             var courseEnrollment = new StudentEnrollmentViewModel
             {
@@ -192,7 +192,7 @@ namespace BizCollegeMvc.Controllers
             }
             try
             {
-                _contextEnrollmentService.EnrollStudent(username, courseId);
+                m_contextEnrollmentService.EnrollStudent(username, courseId);
             }
             catch (Exception ex)
             {

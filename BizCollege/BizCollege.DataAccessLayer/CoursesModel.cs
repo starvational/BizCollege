@@ -36,10 +36,6 @@ namespace BizCollege.DataAccessLayer
         /// <returns>A copy of the persisted course (Note:  the Course.Id will be populated for all new courses)</returns>
         public Course AddOrUpdateCourse(Domain.Course courseToAddOrUpdate)
         {
-            // If the course creation date was not initialized by the course creator
-            // initialize it to the current datetime, otherwise, we'll get an exception
-            // since the .Net DateTime min value is less than the allowed SQL server
-            // database minimum value
             if (courseToAddOrUpdate.CreationDate < System.Data.SqlTypes.SqlDateTime.MinValue.Value)
             {
                 courseToAddOrUpdate.CreationDate = SqlServerHelper.GetSqlServerMinimumDateTimeValue();

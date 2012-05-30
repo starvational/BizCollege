@@ -87,6 +87,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ErrorCodes.cs" />
     <Compile Include="Models\JsonOperationResult.cs" />
     <Compile Include="Models\StudentEnrollmentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

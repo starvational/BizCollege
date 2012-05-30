@@ -10,12 +10,4 @@ namespace BizCollegeMvc.Models
         public ErrorCodes ErrorCode { get; set; }
         public String Message { get; set; }
     } 
-
-    public enum ErrorCodes
-    { 
-        Success, 
-        InvalidData, 
-        Fail
-
-    }
 }

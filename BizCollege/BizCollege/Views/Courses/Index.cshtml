@@ -5,7 +5,9 @@
 <h2>
     Your courses...
 </h2>
-<table>
+<table> 
+@if (Model != null)
+{
     @foreach (var item in Model)
     {
         <tr>
@@ -34,4 +36,5 @@
         </tr>
 
     }
+}
 </table>

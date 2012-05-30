@@ -11,13 +11,13 @@ namespace BizCollegeMvc.Controllers
 {
     public class CourseContentsController : Controller
     {
-        private EnrollmentService _contextEnrollmentService; 
-        private CoursesService _contextCoursesService;
+        private EnrollmentService m_contextEnrollmentService; 
+        private CoursesService m_contextCoursesService;
 
         public CourseContentsController()
         {
-            _contextEnrollmentService = new EnrollmentService();
-            _contextCoursesService = new CoursesService(); 
+            m_contextEnrollmentService = new EnrollmentService();
+            m_contextCoursesService = new CoursesService(); 
         }
         //
         // GET: /CourseContents/
@@ -125,9 +125,9 @@ namespace BizCollegeMvc.Controllers
             CourseContent targetSlide = new CourseContent(); //empty
             try
             {
-                var enrollmentInfo = _contextEnrollmentService.GetEnrollmetnInfo(
+                var enrollmentInfo = m_contextEnrollmentService.GetEnrollmentInfo(
                     User.Identity.Name, courseId);
-                targetSlide = _contextCoursesService.GetCourseSlide(
+                targetSlide = m_contextCoursesService.GetCourseSlide(
                     courseId,
                     enrollmentInfo.LastViewedSlideIndex);
 

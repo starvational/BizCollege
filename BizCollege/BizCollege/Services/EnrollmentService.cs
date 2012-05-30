@@ -10,10 +10,10 @@ namespace BizCollegeMvc.Services
 {
     public class EnrollmentService
     {
-        private StudentEnrollmentsModel _contextEnrollment; 
+        private StudentEnrollmentsModel m_contextEnrollment; 
         public EnrollmentService()
         {
-            _contextEnrollment = new StudentEnrollmentsModel(); 
+            m_contextEnrollment = new StudentEnrollmentsModel(); 
         }
 
         public bool IsStudentEnrolled(String username, String courseId)
@@ -24,21 +24,30 @@ namespace BizCollegeMvc.Services
         }
 
         private StudentRecord GetStudentRecord(String username)
-        {  
-            if(String.IsNullOrEmpty(username))
+        {
+            if (String.IsNullOrEmpty(username))
+            {
                 throw new InvalidOperationException("Student cannot be found..");
-            return _contextEnrollment.GetStudentRecord(username);  
+            }
+            return m_contextEnrollment.GetStudentRecord(username);  
         }
 
         public void EnrollStudent(String username, String courseId)
         {
-            _contextEnrollment.AddEnrollment(username, courseId); 
+            m_contextEnrollment.AddEnrollment(username, courseId); 
         }
 
-        public Enrollment GetEnrollmetnInfo(String username, String courseId)
+        public Enrollment GetEnrollmentInfo(String username, String courseId)
         {
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(courseId))
-                throw new ArgumentNullException(" username and courseId cannot be null");
+            if (String.IsNullOrEmpty(username))
+            {
+                throw new ArgumentNullException(" username cannot be null/empty");
+            }
+
+            if (String.IsNullOrEmpty(courseId))
+            {
+                throw new ArgumentNullException(" courseId cannot be null/empty");
+            }
 
             Enrollment retVal = null;
             // check if student is enrolled  
